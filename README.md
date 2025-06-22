@@ -14,7 +14,9 @@ Este proyecto es una herramienta de asistencia agrícola basada en inteligencia 
 
 ```
 Grupo8/
-├── main.py                  # Punto de entrada del sistema
+├── main.py
+├── ai/
+│   └── chat.py            # Lógica de IA conversacional
 ├── chat.py                  # Lógica del asistente de IA
 ├── config.py                # Configuración general
 ├── bd/
