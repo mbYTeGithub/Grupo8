@@ -13,7 +13,6 @@ import urllib.parse
 import config
 
 
-
 client = OpenAI(api_key=config.gpt_key)
 
 app = FastAPI()
@@ -35,6 +34,7 @@ async def init():
 @app.post("/messages")
 def messages(payload: dict = Body(...)):
     chat_id = payload['message']['chat']['id']
+    print(f"indice de chat: {chat_id}")
     typeApp = payload['type']
     message = payload['message']['text']
     try:

@@ -2,13 +2,21 @@ import numpy as np
 from openai import OpenAI
 from redis import Redis
 from redis.commands.search.query import Query
+import json
 import config
+from langchain.embeddings import OpenAIEmbeddings
+from langchain.vectorstores.redis import Redis as rd
+from langchain.schema import Document
+from redis.commands.search.field import TextField, VectorField
+from redis.commands.search.indexDefinition import IndexDefinition, IndexType
 
 client = OpenAI(api_key=config.gpt_key)
 
 VECTOR_FIELD_NAME = 'content_vector'
+EMBEDDING_DIMENSION = 1536  # Dimensión de los embeddings de text-embedding-ada-002
 
 def find_vector_in_redis(query):
+
     url = "redis://{}:{}@{}:{}/{}".format(
         config.redis_username,
         config.redis_password,
@@ -18,7 +26,7 @@ def find_vector_in_redis(query):
     )
 
     r = Redis.from_url(url=url)
-    top_k = 2
+    top_k = 1
 
     # Crear embedding con la sintaxis correcta
     embedding_response = client.embeddings.create(
@@ -42,5 +50,26 @@ def find_vector_in_redis(query):
 
     # Ejecutar la consulta
     results = r.ft(config.redis_index).search(q, query_params=params_dict)
+    print(f"resultados {results.docs[0]['content']}")
     
-    return results.docs
+    return results.docs[0]['content']
+
+def store_vector_in_redis(corpus, id_document):
+
+     # Generar embedding
+    embeddings = OpenAIEmbeddings(
+        openai_api_key=config.gpt_key
+    )
+
+    documentos = []
+    documento = Document(page_content=corpus)
+
+    print(documento)
+
+    documentos.append(documento)
+    vectorstore = rd.from_documents(
+    documentos,
+    embeddings,
+    redis_url=f"redis://default:{config.redis_password}@{config.redis_host}:{config.redis_port}/0",
+    index_name=config.redis_index
+    )
