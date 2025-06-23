@@ -1,48 +1,56 @@
 ```mermaid
 graph TD
     %% Nodes
-    User[Usuario] -->|Consultas| ChatInterface[Interfaz Chat]
-    ChatInterface -->|Procesamiento| AIAssistant[Asistente IA]
-    AIAssistant -->|Base de Datos| Database[Base de Datos]
-    AIAssistant -->|Análisis Nutricional| NutrientAnalysis[Análisis Nutricional]
-    
+    User[Usuario] -->|Consultas| ChatInterface
+    ChatInterface --> ChatLogic[chat.py]
+    ChatLogic[chat.py] -->|Procesamiento API| AIAssistant[Asistente IA]
+    AIAssistant[Asistente IA] --> EntryPoint[main.py]
+    EntryPoint[main.py] --> AILogic[ai/chat.py]
+    AILogic[ai/chat.py] --> AppConfig[config.py]
+    AILogic[ai/chat.py] --> VectorProcessor[vector.py]
+    AILogic[ai/chat.py] --> SQLModule[sql.py]
+    AILogic[ai/chat.py] -->|Preparación de Recomenciones y Chat Conversacional| OpenAI[GPT4o]
+
     %% Subgraphs
     subgraph Aplicación Principal
         ChatInterface
         AIAssistant
+        EntryPoint[main.py]
+        AppConfig[config.py]
     end
-    
+
     subgraph Componentes de Datos
-        Database
-        NutrientAnalysis
+        SQLModule[sql.py]
+        VectorProcessor[vector.py]
     end
-    
+
+    subgraph Modelos IA
+        OpenAI[GPT4o]
+    end
+
     %% Database Details
-    Database -->|Suelos Globales| SoilData[TIPO_SUELOS_GLOBALES.csv]
-    Database -->|Nutrientes| NutrientData[base_nutricional_cultivos_top30.csv]
-    Database -->|Configuración| Config[base_grupo8.db]
-    
-    %% AI Components
-    AIAssistant -->|Conversación| ChatLogic[chat.py]
-    AIAssistant -->|Procesamiento IA| AILogic[ai/chat.py]
-    
+    SQLModule[sql.py] -->|Información Nutricional| Config[base_grupo8.db]
+    VectorProcessor[vector.py] -->|Historial y Feedback| Confíg[base_vectorial_Redis]
+
+
     %% Deployment
     subgraph Despliegue
         Heroku[Heroku]
         Procfile[Procfile]
         Runtime[runtime.txt]
     end
-    
+
     %% Styling
-    classDef default fill:#f9f,stroke:#333,stroke-width:2px
-    classDef primary fill:#bbf,stroke:#333,stroke-width:2px
-    classDef data fill:#bfb,stroke:#333,stroke-width:2px
-    classDef deployment fill:#fbb,stroke:#333,stroke-width:2px
-    
-    class User,ChatInterface,AIAssistant primary
-    class Database,NutrientAnalysis data
+    classDef default fill:#ffffff,stroke:#333333,stroke-width:2px,color:#000000
+    classDef primary fill:#e6f0ff,stroke:#003366,stroke-width:2px,color:#000000
+    classDef data fill:#e6ffe6,stroke:#006600,stroke-width:2px,color:#000000
+    classDef deployment fill:#e6e6ff,stroke:#000080,stroke-width:2px,color:#000000
+    classDef model fill:#fff0e6,stroke:#cc6600,stroke-width:2px,color:#000000
+
+    class User,ChatInterface,AIAssistant,EntryPoint,AppConfig primary
+    class SQLModule,VectorProcessor data
     class Heroku,Procfile,Runtime deployment
-    
+
     %% Legend
     subgraph Leyenda
         direction TB
@@ -50,14 +58,11 @@ graph TD
         Data[Componentes de Datos]
         Deployment[Componentes de Despliegue]
     end
-    
+
     class Primary primary
     class Data data
     class Deployment deployment
-    
+
     %% Connections
-    style User fill:#f9f,stroke:#333,stroke-width:4px
-    style ChatInterface fill:#bbf,stroke:#333,stroke-width:4px
-    style Database fill:#bfb,stroke:#333,stroke-width:4px
-    style Heroku fill:#fbb,stroke:#333,stroke-width:4px
+    style User fill:#ffffff,stroke:#333333,stroke-width:3px,color:#000000
 ```
