@@ -1,4 +1,4 @@
-# 🧠 Asistente Inteligente para Agricultura de Precisión - Grupo 8
+# 🧠 Asistente Inteligente para Agricultura de Precisión - Agrobot
 
 Este proyecto es una herramienta de asistencia agrícola basada en inteligencia artificial, diseñada para ayudar a agricultores y profesionales del agro a tomar decisiones informadas sobre fertilización, tipos de suelo y requerimientos nutricionales de distintos cultivos.
 
@@ -16,16 +16,14 @@ Este proyecto es una herramienta de asistencia agrícola basada en inteligencia 
 Grupo8/
 ├── main.py
 ├── ai/
-│   └── chat.py            # Lógica de IA conversacional
+│   └── chat.py              # Lógica de IA conversacional
 ├── chat.py                  # Lógica del asistente de IA
 ├── config.py                # Configuración general
 ├── bd/
 │   ├── sql.py               # Funciones para base de datos
 │   ├── vector.py            # Funciones vectoriales para IA
 │   └── data/
-│       ├── base_nutricional_cultivos_top30.csv
-│       ├── base_grupo8.db
-│       └── TIPO_SUELOS_GLOBALES.csv
+│       └── base_grupo8.db   # Base de datos SQLite, concimiento por tipo de cultivo.
 ├── requirements.txt         # Dependencias
 ├── Procfile                 # Despliegue en Heroku
 ├── runtime.txt              # Versión de Python para Heroku
