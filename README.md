@@ -80,9 +80,8 @@ Este proyecto está bajo la licencia MIT. Consulta el archivo `LICENSE` para má
 
 Proyecto desarrollado por el **Grupo 8** como parte de un trabajo académico con foco en soluciones de IA aplicadas al agro.
 
-   ##   Integrantes:
-
-         - **Alejandro Fernández Escobar**
-         - **Leonardo Rojas Castillo**
-         - **Israel Barriga Inostroza**
+   Integrantes:
+                **- Alejandro Fernández Escobar**
+                **- Leonardo Rojas Castillo**
+                **- Israel Barriga Inostroza**
 
